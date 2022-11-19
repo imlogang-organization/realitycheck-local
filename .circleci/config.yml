@@ -78,6 +78,7 @@ jobs:
               echo "This installation is not in an AWS environment. Cancelling downstream workflow.";
               curl -X POST "${CIRCLE_HOSTNAME%/}/api/v2/workflow/$CIRCLE_WORKFLOW_ID/cancel?circle-token=$CIRCLE_TOKEN"
             fi
+            echo "aws test"
 
   check_if_environment_is_gcp:
     docker:
