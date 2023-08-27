@@ -99,6 +99,7 @@ jobs:
   # vm jobs
   machine:
     machine: true
+    resource_class: logan/machine-runner
     steps:
       - run:
           <<: *basic_docker_build
@@ -274,9 +275,6 @@ workflows:
   vm_jobs:
     jobs:
       - machine
-      - remote_docker
-      - docker_layer_caching
-      - machine_dlc
   
   aws_jobs:
     jobs:
