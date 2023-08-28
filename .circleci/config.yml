@@ -220,7 +220,7 @@ jobs:
       - run: echo 5 >./stuff/thing
 
       - save_cache:
-          key: v3-file-cache-{{ .BuildNum }}
+          key: v4-file-cache-{{ .BuildNum }}
           paths:
             - ./stuff/thing
 
@@ -229,7 +229,7 @@ jobs:
 
       - restore_cache:
             keys:
-              - v3-file-cache-{{ .BuildNum }}
+              - v4-file-cache-{{ .BuildNum }}
 
       - run: |
             if [[ $(< stuff/thing) != '5' ]]; then
