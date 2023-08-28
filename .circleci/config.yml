@@ -217,7 +217,7 @@ jobs:
       - checkout
 
       - run: mkdir -p stuff
-      - run: echo 5 >./stuff/thing
+      - run: echo "asdfghgjh" >./stuff/thing
 
       - save_cache:
           key: v4-file-cache-{{ .BuildNum }}
@@ -232,7 +232,7 @@ jobs:
               - v4-file-cache-{{ .BuildNum }}
 
       - run: |
-            if [[ $(< stuff/thing) != '5' ]]; then
+            if [[ $(< stuff/thing) != 'asdfghgjh' ]]; then
               exit 1
             else
               echo "The cache was populated"
