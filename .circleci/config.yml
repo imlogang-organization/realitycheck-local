@@ -21,9 +21,6 @@ resource_job_defaults: &resource_job_defaults
           circle-token=$CIRCLE_TOKEN" | \
           jq '.picard.resource_class.class' | grep $CIRCLE_JOB
 
-remote_docker_defaults: &remote_docker_defaults
-  docker: [{image: 'docker:17.06-git'}]
-
 basic_docker_build: &basic_docker_build
   name: "Build a really basic docker image"
   command: |
@@ -62,42 +59,9 @@ jobs:
   xlarge: # 8 vCPUs, 16GB RAM
     <<: *resource_job_defaults
     resource_class: xlarge
-  
-  check_if_environment_is_aws:
-    docker:
-    - image: 'cimg/base:2021.02-20.04'
-    steps:
-      - run:
-          name: Verify AWS Environment
-          command: |
-            if [ -z "${CIRCLE_CLOUD_PROVIDER}" ];then
-              echo "You must provide the CIRCLE_CLOUD_PROVIDER environment variable in project settings for this job to run.";
-              exit 1;
-            fi
-            if [[ "${CIRCLE_CLOUD_PROVIDER}" != 'aws' ]]; then
-              echo "This installation is not in an AWS environment. Cancelling downstream workflow.";
-              curl -X POST "${CIRCLE_HOSTNAME%/}/api/v2/workflow/$CIRCLE_WORKFLOW_ID/cancel?circle-token=$CIRCLE_TOKEN"
-            fi
-            echo "aws tes1"
-
-  check_if_environment_is_gcp:
-    docker:
-    - image: 'cimg/base:2021.02-20.04'
-    steps:
-      - run:
-          name: Verify GCP Environment
-          command: |
-            if [ -z "${CIRCLE_CLOUD_PROVIDER}" ];then
-              echo "You must provide the CIRCLE_CLOUD_PROVIDER environment variable in project settings for this job to run.";
-              exit 1;
-            fi
-            if [[ "${CIRCLE_CLOUD_PROVIDER}" != 'gcp' ]]; then
-              echo "This installation is not in an GCP environment. Cancelling downstream workflow.";
-              curl -X POST "${CIRCLE_HOSTNAME%/}/api/v2/workflow/$CIRCLE_WORKFLOW_ID/cancel?circle-token=$CIRCLE_TOKEN"
-            fi
 
   # vm jobs
-  machine:
+  machine_runner:
     machine: true
     resource_class: logan/machine-runner
     steps:
@@ -111,69 +75,13 @@ jobs:
           echo 'Done sleeping.'
     environment:
       SLEEP: 1
-  
-  android_machine:
-    machine:
-      image: android-default
-    steps:
-      - run:
-          <<: *basic_docker_build
-      - run: |
-          echo $SLEEP
-          date
-          sleep $SLEEP
-          date
-          echo 'Done sleeping.'
-    environment:
-      SLEEP: 1
 
-  aws_arm:
-    machine:
-      image: arm-default
-    resource_class: arm.medium
-    steps:
-      - run:
-          <<: *basic_docker_build
-      - run: |
-          echo $SLEEP
-          date
-          sleep $SLEEP
-          date
-          echo 'Done sleeping.'
-    environment:
-      SLEEP: 1
-
-  remote_docker:
-    <<: *remote_docker_defaults
-    steps:
-      - run: which docker
-      - run: docker -v
-      - setup_remote_docker
-      - run:
-          <<: *basic_docker_build
-      - run: docker version
-
-  docker_layer_caching:
-    <<: *remote_docker_defaults
-    steps:
-      - run: which docker
-      - run: docker -v
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          <<: *basic_docker_build
-      - run: docker version
-
-  machine_dlc:
-    machine:
-      docker_layer_caching: true
-    steps:
-      - run: which docker
-      - run: docker -v
-      - run:
-          <<: *basic_docker_build
-      - run: docker version
-
+  container_runner:
+    docker:
+      - image: cimg/base:current
+    steps: 
+      - run: echo "I'm running on Container Runner on CircleCI Server!" 
+      
   # feature jobs
   contexts:
     <<: *contexts_defaults
@@ -272,23 +180,10 @@ workflows:
       - large
       - xlarge
 
-  vm_jobs:
+  runner_jobs:
     jobs:
-      - machine
-  
-  aws_jobs:
-    jobs:
-      - check_if_environment_is_aws
-      - aws_arm:
-          requires:
-            - check_if_environment_is_aws
-  
-  gcp_jobs:
-    jobs:
-      - check_if_environment_is_gcp
-      - android_machine:
-          requires:
-            - check_if_environment_is_gcp
+      - machine_runner
+      - container_runner
 
   feature_jobs:
     jobs:
