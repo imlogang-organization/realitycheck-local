@@ -63,7 +63,7 @@ jobs:
   # vm jobs
   machine_runner:
     machine: true
-    resource_class: logan/machine-runner
+    resource_class: imlogang-organization-server/machine-runner
     steps:
       - run:
           <<: *basic_docker_build
@@ -79,6 +79,7 @@ jobs:
   container_runner:
     docker:
       - image: cimg/base:current
+    resource_class: imlogang-organization-server/container-runner-server
     steps: 
       - run: echo "I'm running on Container Runner on CircleCI Server!" 
       
