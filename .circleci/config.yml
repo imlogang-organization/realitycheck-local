@@ -50,9 +50,9 @@ jobs:
     <<: *resource_job_defaults
     resource_class: medium
 
-  medium_plus: # 3 vCPUs, 6GB RAM
-    <<: *resource_job_defaults
-    resource_class: medium+
+  #medium_plus: # 3 vCPUs, 6GB RAM
+    #<<: *resource_job_defaults
+    #resource_class: medium+
 
   large: # 4 vCPUs, 8GB RAM
     <<: *resource_job_defaults
@@ -173,7 +173,7 @@ workflows:
     jobs:
       - small
       - medium
-      - medium_plus
+      #- medium_plus
       - large
 
   runner_jobs:
