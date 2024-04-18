@@ -86,6 +86,12 @@ jobs:
     resource_class: imlogang-organization-server/container-runner-server
     steps: 
       - run: echo "I'm running on Container Runner on CircleCI Server!" 
+
+  aws-runner:
+    machine: true
+    resource_class: imlogang-organization-server/aws-runner
+    steps:
+      - run: echo "This is on AWS!!!"
       
   # feature jobs
   contexts:
