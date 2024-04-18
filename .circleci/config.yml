@@ -62,8 +62,6 @@ jobs:
   machine_runner:
     machine: true
     resource_class: imlogang-organization-server/machine-runner
-    environment:
-      CIRCLE_URL: "https://cciserver.logangodsey.com"
     steps:
       - run:
           <<: *basic_docker_build
@@ -75,6 +73,7 @@ jobs:
           echo 'Done sleeping.'
     environment:
       SLEEP: 1
+      CIRCLE_URL: "https://cciserver.logangodsey.com"
 
   ubuntu_k8s_machine_runner:
     machine: true
