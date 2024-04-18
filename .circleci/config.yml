@@ -187,6 +187,7 @@ workflows:
       - machine_runner
       - container_runner
       - ubuntu_k8s_machine_runner
+      - aws-runner
 
   feature_jobs:
     jobs:
