@@ -62,6 +62,8 @@ jobs:
   machine_runner:
     machine: true
     resource_class: imlogang-organization-server/machine-runner
+    environment:
+      CIRCLE_URL: "https://cciserver.logangodsey.com"
     steps:
       - run:
           <<: *basic_docker_build
