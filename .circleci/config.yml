@@ -87,11 +87,17 @@ jobs:
     steps: 
       - run: echo "I'm running on Container Runner on CircleCI Server!" 
 
-  aws-runner:
+  docker-runner-mr3:
     machine: true
-    resource_class: imlogang-organization-server/aws-runner
+    resource_class: imlogang-organization-server/docker-mr3
     steps:
-      - run: echo "This is on AWS!!!"
+      - run: echo "This is on Docker with Machine Runner 3.0!!!"
+
+  docker-runner-la:
+    machine: true
+    resource_class: imlogang-organization-server/docker-runner
+    steps:
+      - run: echo "This is on Docker with Launch Agent!!!"
       
   # feature jobs
   contexts:
@@ -171,8 +177,6 @@ jobs:
           destination: artifact-file.txt
       - store_artifacts:
           path: /tmp/artifacts
-      - store_test_results:
-          path: test-results
 
 workflows:
   resource_class_jobs:
@@ -187,7 +191,8 @@ workflows:
       - machine_runner
       - container_runner
       - ubuntu_k8s_machine_runner
-      - aws-runner
+      - docker-runner-la
+      - docker-runner-mr3
 
   feature_jobs:
     jobs:
