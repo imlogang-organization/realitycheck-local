@@ -58,6 +58,16 @@ jobs:
     <<: *resource_job_defaults
     resource_class: large
 
+  random-resource-test:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - run: |
+          curl -k \
+          "${CIRCLE_HOSTNAME%/}/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM?\
+          circle-token=$CIRCLE_TOKEN" | \
+          jq '.picard.resource_class.class' | grep large
+
   # vm jobs
   machine_runner:
     machine: true
@@ -185,6 +195,7 @@ workflows:
       - medium
       #- medium_plus
       - large
+      - random-resource-test
 
   runner_jobs:
     jobs:
