@@ -68,7 +68,7 @@ jobs:
           circle-token=$CIRCLE_TOKEN" | \
           jq '.picard.resource_class.class' | grep large
 
-  small:
+  small_machine:
     machine: true
     resource_class: small
     steps:
@@ -199,7 +199,7 @@ workflows:
 
   machine_provisioner:
     jobs:
-      - machine_job
+      - small_machine
   
   runner_jobs:
     jobs:
