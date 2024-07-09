@@ -68,8 +68,9 @@ jobs:
           circle-token=$CIRCLE_TOKEN" | \
           jq '.picard.resource_class.class' | grep large
 
-  machine_job:
+  small:
     machine: true
+    resource_class: small
     steps:
       - run: echo "I'm on a machine in AWS!!!!"
   
@@ -101,13 +102,7 @@ jobs:
     resource_class: imlogang-organization-server/container-runner-server
     steps: 
       - run: echo "I'm running on Container Runner on CircleCI Server!" 
-
-  docker-runner-mr3:
-    machine: true
-    resource_class: imlogang-organization-server/docker-mr3
-    steps:
-      - run: echo "This is on Docker with Machine Runner 3.0!!!"
-
+      
   docker-runner-la:
     machine: true
     resource_class: imlogang-organization-server/docker-runner
@@ -212,7 +207,6 @@ workflows:
       - container_runner
       - ubuntu_k8s_machine_runner
       - docker-runner-la
-      - docker-runner-mr3
 
   feature_jobs:
     jobs:
