@@ -68,6 +68,11 @@ jobs:
           circle-token=$CIRCLE_TOKEN" | \
           jq '.picard.resource_class.class' | grep large
 
+  machine_job:
+    machine: true
+    steps:
+      - run: echo "I'm on a machine in AWS!!!!"
+  
   # vm jobs
   machine_runner:
     machine: true
@@ -197,6 +202,10 @@ workflows:
       - large
       - random-resource-test
 
+  machine_provisioner:
+    jobs:
+      - machine_job
+  
   runner_jobs:
     jobs:
       - machine_runner
