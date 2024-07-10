@@ -83,12 +83,18 @@ jobs:
           <<: *basic_docker_build 
           
   dlc_machine_job:
-    machine: true
-    docker_layer_caching: true
+    machine: 
+      image: default
+      docker_layer_caching: true
     steps:
       - run:
           <<: *basic_docker_build
-          
+
+  remote_docker_job:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - setup_remote_docker
   
   
   # vm jobs
@@ -219,6 +225,7 @@ workflows:
       - medium_machine
       - large_machine
       - dlc_machine_job
+      - remote_docker_job
   
   runner_jobs:
     jobs:
