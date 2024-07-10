@@ -84,6 +84,7 @@ jobs:
           
   dlc_machine_job:
     machine: true
+    docker_layer_caching: true
     steps:
       - run:
           <<: *basic_docker_build
