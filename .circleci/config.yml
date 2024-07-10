@@ -68,11 +68,27 @@ jobs:
           circle-token=$CIRCLE_TOKEN" | \
           jq '.picard.resource_class.class' | grep large
 
-  small_machine:
+  medium_machine:
     machine: true
-    resource_class: small
+    resource_class: medium
     steps:
-      - run: echo "I'm on a machine in AWS!!!!"
+      - run:
+          <<: *basic_docker_build
+          
+  large_machine:
+    machine: true
+    resource_class: large
+    steps:
+      - run:
+          <<: *basic_docker_build 
+          
+  dlc_machine_job:
+    machine: true
+    steps:
+      - run:
+          <<: *basic_docker_build
+          
+  
   
   # vm jobs
   machine_runner:
@@ -199,7 +215,9 @@ workflows:
 
   machine_provisioner:
     jobs:
-      - small_machine
+      - medium_machine
+      - large_machine
+      - dlc_machine_job
   
   runner_jobs:
     jobs:
