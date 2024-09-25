@@ -95,6 +95,20 @@ jobs:
       - image: cimg/base:current
     steps:
       - setup_remote_docker
+
+  windows_medium: 
+    machine: 
+      image: windows-default
+    resource_class: windows.medium
+    steps:
+      - run: echo "I'm on windows medium!"
+
+  windows_large: 
+    machine:
+      image: windows-default
+    resource_class: windows.medium
+    steps:
+      - run: echo "I'm on windows large!"
   
   
   # vm jobs
@@ -220,12 +234,17 @@ workflows:
       - large
       - random-resource-test
 
-  machine_provisioner:
+  machine_provisioner_linux:
     jobs:
       - medium_machine
       - large_machine
       - dlc_machine_job
       - remote_docker_job
+
+  machine_provisioner_windows:
+    jobs:
+      - windows_medium
+      - windows_large
   
   runner_jobs:
     jobs:
