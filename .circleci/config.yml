@@ -140,11 +140,23 @@ jobs:
     steps: 
       - run: echo "I'm running on Container Runner on CircleCI Server!" 
       
-  docker-runner-la:
+  docker-runner-mr3:
     machine: true
-    resource_class: imlogang-organization-server/docker-runner
+    resource_class: imlogang-organization-server/docker-mr3
     steps:
       - run: echo "This is on Docker with Launch Agent!!!"
+
+  docker-host:
+    machine: true
+    resource_class: imlogang-organization-server/docker-host
+    steps:
+      - run: echo "I am on Machine Runner 3.0 on the Docker Host computer!"
+
+  minecraft-dell:
+    machine: true
+    resource_class: imlogang-organization-server/minecraftdell
+    steps:
+      - run: echo "I am on Machine Runner 3.0 on the MinecraftDell computer!"
       
   # feature jobs
   contexts:
@@ -251,7 +263,9 @@ workflows:
       - machine_runner
       - container_runner
       - ubuntu_k8s_machine_runner
-      - docker-runner-la
+      - docker-runner-mr3
+      - docker-host
+      - minecraft-dell
 
   feature_jobs:
     jobs:
