@@ -106,7 +106,7 @@ jobs:
   windows_large: 
     machine:
       image: windows-default
-    resource_class: windows.medium
+    resource_class: windows.large
     steps:
       - run: echo "I'm on windows large!"
   
