@@ -102,6 +102,7 @@ jobs:
       image: windows-default
     resource_class: windows.medium
     steps:
+      - checkout
       - run: echo "I'm on windows medium!"
 
   windows_large: 
@@ -109,6 +110,7 @@ jobs:
       image: windows-default
     resource_class: windows.large
     steps:
+      - checkout
       - run: echo "I'm on windows large!"
   
   
